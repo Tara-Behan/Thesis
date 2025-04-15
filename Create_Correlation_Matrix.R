@@ -5,7 +5,7 @@ This code was used for data visualization and statistical analysis.
 Loading Data
 
 #load in autism data and rename columns
-autism_pgs_data <- read.table("adhd_1kg_PRS.sscore", header=FALSE)
+autism_pgs_data <- read.table("autism_1kg_PRS.sscore", header=FALSE)
 
 head(autism_pgs_data)
 
