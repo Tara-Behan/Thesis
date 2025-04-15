@@ -1,0 +1,108 @@
+Impute autism, insomnia and chronotype summary statistics
+
+Bash
+
+Autism
+
+# First, get summary statistics into cojo format
+# Tidy
+Rscript -e "SBayesRC::tidy(mafile=‘autism_cojo_tab.txt’, LDdir='../ukbEUR_Imputed', output='autism_tidy.ma', log2file=TRUE)"
+ 
+# Impute
+Rscript -e "SBayesRC::impute(mafile='autism_tidy.ma', LDdir='../ukbEUR_Imputed', output='autism_imp.ma', log2file=TRUE)"
+ 
+# Run model
+ 
+Rscript -e "SBayesRC::sbayesrc(mafile='autism_imp.ma', LDdir='../ukbEUR_Imputed', outPrefix='autism_tidy_sbrc', annot='../annot_baseline2.2.txt', log2file=TRUE)"
+
+Insomnia
+
+# First, get summary statistics into cojo format
+# Tidy
+Rscript -e "SBayesRC::tidy(mafile=‘insomnia_cojo_tab.txt’, LDdir='../ukbEUR_Imputed', output='insomnia_tidy.ma', log2file=TRUE)"
+ 
+# Impute
+Rscript -e "SBayesRC::impute(mafile='insomnia_tidy.ma', LDdir='../ukbEUR_Imputed', output='insomnia_imp.ma', log2file=TRUE)"
+ 
+# Run model
+ 
+Rscript -e "SBayesRC::sbayesrc(mafile='insomnia_imp.ma', LDdir='../ukbEUR_Imputed', outPrefix='insomnia_tidy_sbrc', annot='../annot_baseline2.2.txt', log2file=TRUE)"
+
+Chronotype
+
+# First, get summary statistics into cojo format
+# Tidy
+Rscript -e "SBayesRC::tidy(mafile=‘chronotype_cojo_tab.txt’, LDdir='../ukbEUR_Imputed', output='chronotype_tidy.ma', log2file=TRUE)"
+ 
+# Impute
+Rscript -e "SBayesRC::impute(mafile='chronotype_tidy.ma', LDdir='../ukbEUR_Imputed', output='chronotype_imp.ma', log2file=TRUE)"
+ 
+# Run model
+ 
+Rscript -e "SBayesRC::sbayesrc(mafile='chronotype_imp.ma', LDdir='../ukbEUR_Imputed', outPrefix='chronotype_tidy_sbrc', annot='../annot_baseline2.2.txt', log2file=TRUE)"
+
+Bash Code (PLINK 2.0)
+
+This code was primarily used for data preparation and quality control of the 1000 Genomes dataset.
+
+Downloading and Converting Data
+
+Bash
+
+# Download 1000 Genomes VCF files
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/*.vcf.gz
+
+# Convert VCF to PLINK format
+plink --vcf ALL.chr*.vcf.gz --make-bed --out 1000G
+wget: Downloads the VCF (Variant Call Format) files from the 1000 Genomes Project.
+plink --vcf ... --make-bed --out 1000G: Converts the downloaded VCF files into PLINK's binary format (.bed, .bim, .fam), which is more efficient for PLINK to work with.
+
+Quality Control
+
+Bash
+
+# Filter SNPs and individuals based on missingness and MAF
+plink --bfile 1000G --geno 0.05 --mind 0.05 --maf 0.01 --make-bed --out 1000G_QC
+
+# Perform LD pruning to reduce SNP correlation
+plink --bfile 1000G_QC --indep-pairwise 50 5 0.2 --out 1000G_pruned
+plink --bfile 1000G_QC --extract 1000G_pruned.prune.in --make-bed --out 1000G_LDpruned
+plink --bfile 1000G --geno 0.05 --mind 0.05 --maf 0.01 --make-bed --out 1000G_QC:
+--bfile 1000G: Specifies the input PLINK binary files.
+--geno 0.05: Removes SNPs with >5% missing genotype data.
+--mind 0.05: Removes individuals with >5% missing genotype data.
+--maf 0.01: Removes SNPs with a minor allele frequency <1%.
+--make-bed: Creates new PLINK binary files with the filtered data.
+--out 1000G_QC: Specifies the output file name prefix.
+plink --bfile 1000G_QC --indep-pairwise 50 5 0.2 --out 1000G_pruned:
+Performs LD (linkage disequilibrium) pruning. LD is the correlation between SNPs. Pruning reduces redundancy in the data.
+50 5 0.2: Parameters for the window size, step size, and r^2 threshold for LD pruning.
+plink --bfile 1000G_QC --extract 1000G_pruned.prune.in --make-bed --out 1000G_LDpruned:
+Creates a new PLINK file with only the SNPs that passed the LD pruning.
+
+Principal Component Analysis (PCA)
+
+Bash
+
+plink --bfile 1000G_LDpruned --pca 10 --out 1000G_PCA
+plink --bfile 1000G_LDpruned: Uses the LD-pruned data.
+--pca 10: Performs PCA and calculates the top 10 principal components. PCA is used to capture population structure.
+--out 1000G_PCA: Specifies the output file name prefix.
+
+Filtering GWAS SNPs
+
+Bash
+
+plink --bfile 1000G_QC --extract <GWAS_SNP_list.txt> --make-bed --out GWAS_SNPs_filtered
+plink --bfile 1000G_QC: Uses the QC-ed data.
+--extract <GWAS_SNP_list.txt>: Filters the 1000 Genomes data to include only the SNPs present in the GWAS summary statistics. This ensures consistency between the datasets.
+--make-bed: Creates new PLINK binary files with the filtered data.
+--out GWAS_SNPs_filtered: Specifies the output file name prefix.
+
+Extracting SNP Weights
+
+Bash
+
+awk '{print $2, $4}' Autism_SBayesRC.snpRes > Autism_PGS_weights.txt
+awk: A command-line tool for text processing.
+This extracts the SNP identifier and effect size (beta) from the SBayesRC output file ("Autism_SBayesRC.snpRes") and saves them into a new file ("Autism_PGS_weights.txt"). These effect sizes are the weights used to calculate the PGS.
