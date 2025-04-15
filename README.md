@@ -55,7 +55,8 @@ echo "Reformatting complete. Output saved to $OUTPUT_FILE."
 
 ### Filter SNPs from GWAS and 1000 Genomes Dataset
 This filtration ensured that only SNPs that were present in both the GWAS and the 1000 Genomes datasets remained
-```plink --bfile 1000G_QC --extract <GWAS_SNP_list.txt> --make-bed --out GWAS_SNPs_filtered
+```
+plink --bfile 1000G_QC --extract <GWAS_SNP_list.txt> --make-bed --out GWAS_SNPs_filtered
 ```
 
 ## SBayesRC
@@ -74,7 +75,8 @@ Rscript -e "SBayesRC::sbayesrc(mafile='autism_imp.ma', LDdir='../ukbEUR_Imputed'
 
 ### Extracting Weight Sizes
 The SNP weighted effects estimates were then extracted to be used in computing PGS
-```awk '{print $2, $4}' Autism_SBayesRC.snpRes > Autism_PGS_weights.txt
+```
+awk '{print $2, $4}' Autism_SBayesRC.snpRes > Autism_PGS_weights.txt
 ```
 
 ## PGS Computation 
@@ -115,7 +117,8 @@ merged_data <- merge(pgs_data, pca_data, by=c("FID", "IID"))
 
 ### Scatter Plot to assess PCA
 A Scatter Plot was generated to evaluate whether principal components had an effect on autism PGS
-```library(ggplot2)
+```
+library(ggplot2)
 
 ggplot(merged_data, aes(x = PC1, y = PC2, color = `Score Average`)) +
   geom_point(size = 3, alpha = 0.7) +
@@ -130,7 +133,8 @@ ggplot(merged_data, aes(x = PC1, y = PC2, color = `Score Average`)) +
 
 ### Histogram of PGS Distribution
 A Histogram was created to enable autism PGS distribution to be observed, whether it was normalised or not, and to assess if the polygenic model was supported.
-```library(ggplot2)
+```
+library(ggplot2)
 
 ggplot(merged_data, aes(x = `Score Average`)) +
   geom_histogram(bins = 30, fill = "blue", alpha = 0.7) +
@@ -142,7 +146,8 @@ ggplot(merged_data, aes(x = `Score Average`)) +
 
 ### Correlation Matrix
 The correlation matrix was generated to determine the genetic relationships between autism, insomnia and chronotype PGS
-```cor.test(merged_data$Autism_SCORE, merged_data$Sleep_SCORE)
+```
+cor.test(merged_data$Autism_SCORE, merged_data$Sleep_SCORE)
 
 # Create a data frame from correlation results
 correlation_data <- data.frame(
@@ -175,7 +180,8 @@ ggplot(data = correlation_data, aes(x = Variable1, y = Variable2, fill = cor)) +
 
 ### Linear Regression Graph
 A linear Regression was carried out to determine whether the principal components accurately predicted autism PGS. This was observed by plotting the predicted PGS against the observed autism PGS.
-```library(ggplot2)
+```
+library(ggplot2)
 
 ggplot(merged_data, aes(x = predict(lm_result), y = `Score Average`)) +
   geom_point() +
@@ -188,7 +194,8 @@ ggplot(merged_data, aes(x = predict(lm_result), y = `Score Average`)) +
 
 ### Boxplot of PGS Distribution Across Ancestry
 This boxplot allowed for the determination of whether ancestry (super-population) influenced PGS distribution
-```library(ggplot2)
+```
+library(ggplot2)
 
 ggplot(merged_data, aes(x=Population, y=SCORE)) +
     geom_boxplot() +
