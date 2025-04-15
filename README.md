@@ -20,7 +20,7 @@ plink --vcf ALL.chr*.vcf.gz --make-bed --out 1000G
 ```
 
 ### Quality Control (QC)
-QC was carried out to exclude any low quality SNPs and/or indivudals, making downstream analyses more robust
+QC was carried out to exclude any low quality SNPs and/or individuals, making downstream analyses more robust
 ```# Filter SNPs and individuals based on missingness and MAF
 plink --bfile 1000G --geno 0.05 --mind 0.05 --maf 0.01 --make-bed --out 1000G_QC
 
