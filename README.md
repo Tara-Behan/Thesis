@@ -31,7 +31,7 @@ plink --bfile 1000G_QC --extract 1000G_pruned.prune.in --make-bed --out 1000G_LD
 
 ### Principal Component Analysis (PCA)
 The first ten principal components were extracted to investigate whether population had an influence on PGS interpretation. 
-This is enabled due to PCA capturing population structure.
+This is possible due to PCA capturing population structure.
 ```
 plink --bfile 1000G_LDpruned --pca 10 --out 1000G_PCA
 ```
