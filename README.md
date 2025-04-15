@@ -4,15 +4,15 @@ Analyses performed for 4th year lab project, "How Do Genetic Factors Associated 
 ## Aims
 The main objectives of this project were to:
 
-**.** Investigate the genetic correlations between Polygenic Risk Scores (PGS) for autism, insomnia and chronotype
+**.** Investigate the genetic correlations between Polygenic Risk Scores (PGS) for autism, insomnia and chronotype.
 
-**.** Analyse PGS distributions across global populations using the 1000 Genomes Project
+**.** Analyse PGS distributions across global populations using the 1000 Genomes Project.
 
-**.** Examine the influence of population structure on autism PGS interpretation
+**.** Examine the influence of population structure on autism PGS interpretation.
 
 ## Data Preparation
 ### Download and Convert the 1000 Genomes Project Dataset
-In order to calculate PGS, the 1000 Genomes Project had to be downloaded and converted into a compatible format for SBayesRC
+In order to calculate PGS, the 1000 Genomes Project had to be downloaded and converted into a compatible format for SBayesRC.
 ```# Download 1000 Genomes VCF files
 wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/*.vcf.gz
 # Convert VCF to PLINK format
@@ -20,7 +20,7 @@ plink --vcf ALL.chr*.vcf.gz --make-bed --out 1000G
 ```
 
 ### Quality Control (QC)
-QC was carried out to exclude any low quality SNPs and/or individuals, making downstream analyses more robust
+QC was carried out to exclude any low quality SNPs and/or individuals, making downstream analyses more robust.
 ```# Filter SNPs and individuals based on missingness and MAF
 plink --bfile 1000G --geno 0.05 --mind 0.05 --maf 0.01 --make-bed --out 1000G_QC
 
@@ -57,7 +57,7 @@ echo "Reformatting complete. Output saved to $OUTPUT_FILE."
 ```
 
 ### Filter SNPs from GWAS and 1000 Genomes Dataset
-This filtration ensured that only SNPs that were present in both the GWAS and the 1000 Genomes datasets remained
+This filtration ensured that only SNPs that were present in both the GWAS and the 1000 Genomes datasets remained.
 ```
 plink --bfile 1000G_QC --extract <GWAS_SNP_list.txt> --make-bed --out GWAS_SNPs_filtered
 ```
@@ -77,7 +77,7 @@ Rscript -e "SBayesRC::sbayesrc(mafile='autism_imp.ma', LDdir='../ukbEUR_Imputed'
 ```
 
 ### Extracting Weight Sizes
-The SNP weighted effects estimates were then extracted to be used in computing PGS
+The SNP weighted effects estimates were then extracted to be used in PGS generation.
 ```
 awk '{print $2, $4}' Autism_SBayesRC.snpRes > Autism_PGS_weights.txt
 ```
@@ -119,7 +119,7 @@ merged_data <- merge(pgs_data, pca_data, by=c("FID", "IID"))
 ```
 
 ### Scatter Plot to assess PCA
-A Scatter Plot was generated to evaluate whether principal components had an effect on autism PGS
+A Scatter Plot was generated to evaluate whether principal components had an effect on autism PGS.
 ```
 library(ggplot2)
 
@@ -148,7 +148,7 @@ ggplot(merged_data, aes(x = `Score Average`)) +
 ```
 
 ### Correlation Matrix
-The correlation matrix was generated to determine the genetic relationships between autism, insomnia and chronotype PGS
+The correlation matrix was generated to determine the genetic relationships between autism, insomnia and chronotype PGS.
 ```
 cor.test(merged_data$Autism_SCORE, merged_data$Sleep_SCORE)
 
@@ -196,7 +196,7 @@ ggplot(merged_data, aes(x = predict(lm_result), y = `Score Average`)) +
 ```
 
 ### Boxplot of PGS Distribution Across Ancestry
-This boxplot allowed for the determination of whether ancestry (super-population) influenced PGS distribution
+This boxplot allowed for the determination of whether ancestry (super-population) influenced PGS distribution.
 ```
 library(ggplot2)
 
