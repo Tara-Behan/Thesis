@@ -1,0 +1,10 @@
+Computing PGS
+
+Bash
+
+plink --bfile 1000G_QC \
+      --score Autism_PGS_weights.txt 1 2 3 header \
+      --out 1000G_Autism_PGS
+plink --bfile 1000G_QC: Uses the QC-ed 1000 Genomes data.
+--score Autism_PGS_weights.txt 1 2 3 header: Calculates the PGS using the weights from the "Autism_PGS_weights.txt" file. The "1 2 3 header" part specifies the columns in the weights file that contain the SNP ID and weight information.
+--out 1000G_Autism_PGS: Specifies the output file name prefix.
