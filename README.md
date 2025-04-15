@@ -3,8 +3,11 @@ Analyses performed for 4th year lab project, "How Do Genetic Factors Associated 
 
 ## Aims
 The main objectives of this project were to:
+
 **.** Investigate the genetic correlations between Polygenic Risk Scores (PGS) for autism, insomnia and chronotype
+
 **.** Analyse PGS distributions across global populations using the 1000 Genomes Project
+
 **.** Examine the influence of population structure on autism PGS interpretation
 
 ## Data Preparation
