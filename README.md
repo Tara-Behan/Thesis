@@ -29,7 +29,8 @@ plink --bfile 1000G_QC --extract 1000G_pruned.prune.in --make-bed --out 1000G_LD
 ### Principal Component Analysis (PCA)
 The first ten principal components were extracted to investigate whether population had an influence on PGS interpretation. 
 This is enabled due to PCA capturing population structure.
-```plink --bfile 1000G_LDpruned --pca 10 --out 1000G_PCA
+```
+plink --bfile 1000G_LDpruned --pca 10 --out 1000G_PCA
 ```
 ## Reformatting GWAS Summary Statistics into COJO Format
 The GWAS Summary Statistics are converted into COJO format as this ensures that the SNP IDs, alleles and effect sizes match the 1000 Genomes dataset. Below is an example of the Bash code used for the 
@@ -78,7 +79,8 @@ The SNP weighted effects estimates were then extracted to be used in computing P
 
 ## PGS Computation 
 The extracted weighted effect sizes were then used to generate individual PGS across autism, insomnia and chronotype. Below example is for the autism scores.
-```plink --bfile 1000G_QC \
+```
+plink --bfile 1000G_QC \
       --score Autism_PGS_weights.txt 1 2 3 header \
       --out 1000G_Autism_PGS
 ```
@@ -186,7 +188,9 @@ ggplot(merged_data, aes(x = predict(lm_result), y = `Score Average`)) +
 
 ### Boxplot of PGS Distribution Across Ancestry
 This boxplot allowed for the determination of whether ancestry (super-population) influenced PGS distribution
-```ggplot(merged_data, aes(x=Population, y=SCORE)) +
+```library(ggplot2)
+
+ggplot(merged_data, aes(x=Population, y=SCORE)) +
     geom_boxplot() +
     labs(title="Autism PGS Across Populations", x="Population", y="PGS") +
     theme_minimal()
