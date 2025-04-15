@@ -91,7 +91,7 @@ plink --bfile 1000G_QC \
 ```
 
 ## Data Visualisation and Analysis 
-In order to create a single dataset for autism, the PGS were combined with the PCA components, super-population and population files within RStudio.
+In order to create a single dataset for autism, the PGS were combined with the PCA components, super-population, and population within RStudio.
 ```#load in autism data and rename columns
 autism_pgs_data <- read.table("autism_1kg_PRS.sscore", header=FALSE)
 
