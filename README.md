@@ -27,10 +27,10 @@ plink --bfile 1000G_QC --extract 1000G_pruned.prune.in --make-bed --out 1000G_LD
 ```
 
 ### Principal Component Analysis (PCA)
-The first ten principal components were extracted to investigate whether population had an influence on PGS interpretation. This is enabled by PCA capturing population structure
+The first ten principal components were extracted to investigate whether population had an influence on PGS interpretation. 
+This is enabled due to PCA capturing population structure.
 ```plink --bfile 1000G_LDpruned --pca 10 --out 1000G_PCA
 ```
-
 ## Reformatting GWAS Summary Statistics into COJO Format
 The GWAS Summary Statistics are converted into COJO format as this ensures that the SNP IDs, alleles and effect sizes match the 1000 Genomes dataset. Below is an example of the Bash code used for the 
 GWAS summary statistics of each trait within the Ubuntu terminal.
