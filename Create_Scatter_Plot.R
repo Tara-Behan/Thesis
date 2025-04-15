@@ -4,19 +4,28 @@ This code was used for data visualization and statistical analysis.
 
 Loading Data
 
-R
+#load in autism data and rename columns
+autism_pgs_data <- read.table("autism_1kg_PRS.sscore", header=FALSE)
 
-library(ggplot2)
-pgs_data <- read.table("1000G_Autism_PGS.profile", header=TRUE)
-pca_data <- read.table("1000G_PCA.eigenvec", header=FALSE)
-colnames(pca_data) <- c("FID", "IID", paste0("PC", 1:10))
-library(ggplot2): Loads the ggplot2 package for plotting.
-pgs_data <- read.table("1000G_Autism_PGS.profile", header=TRUE): Reads the PGS data from a file.
-pca_data <- read.table("1000G_PCA.eigenvec", header=FALSE): Reads the PCA results from a file.
-colnames(pca_data) <- c("FID", "IID", paste0("PC", 1:10)): Assigns column names to the PCA data (FID = Family ID, IID = Individual ID, PC1-PC10 = Principal Components).
-Merging Data
+head(autism_pgs_data)
 
-R
+colnames(autism_pgs_data)[1] <- "FID"
+colnames(autism_pgs_data)[2] <- "IID"
+colnames(autism_pgs_data)[3] <- "ALLELE_CT"
+colnames(autism_pgs_data)[4] <- "NAMED_ALLELE_DOSAGE_SUM"
+colnames(autism_pgs_data)[5] <- "SCORE_AVERAGE"
+
+#load in population label data
+pop_data <- read.table("1000G_Merged_Population_Corrected.txt", header=TRUE)
+
+#load in pca data and rename columns 
+pca_data <- read.table("1kg_pca.eigenvec", header=FALSE)
+
+colnames(pca_data) <- c("FID", "IID", paste0("PC", 1:(ncol(pca_data)-2)))
+
+pca_data <- pca_data[, -1]
+
+#merge  Autism PGS, PCA and population labels
 
 merged_data <- merge(pgs_data, pca_data, by=c("FID", "IID"))
 merge(...): Merges the PGS data and PCA data based on the individual identifiers (FID and IID).
