@@ -86,7 +86,7 @@ The extracted weighted effect sizes were then used to generate individual PGS ac
 ## Data Visualisation and Analysis 
 In order to create a single dataset for autism, the PGS were combined with the PCA components, super-population and population files within RStudio.
 ```#load in autism data and rename columns
-autism_pgs_data <- read.table("adhd_1kg_PRS.sscore", header=FALSE)
+autism_pgs_data <- read.table("autism_1kg_PRS.sscore", header=FALSE)
 
 head(autism_pgs_data)
 
